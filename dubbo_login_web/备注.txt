@@ -1,0 +1,3 @@
+dubbo_login_web中的src/main/resource中的spring的xml是用于测试使用，直接运行LoginConsumer.java的main方法时加载使用。
+
+LoginAction.java的start方法也是用于main方法的测试。

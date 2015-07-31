@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="dubbo_login_web">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="hessian-lite-3.2.1-fixed-2.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/hessian-lite/hessian-lite">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="dubbo_login_api-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/dubbo_login_api/dubbo_login_api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="dubbo_login_web"/>
+        <property name="java-output-path" value="/dubbo_login_web/target/classes"/>
+    </wb-module>
+</project-modules>
