@@ -28,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xx.dubbo.login.api.LoginService;
 
@@ -36,34 +37,56 @@ import com.xx.dubbo.login.api.LoginService;
 public class LoginAction {
     
 	@RequestMapping(value = "/login.do")//, method = RequestMethod.POST)
-	public void login(HttpServletRequest request, HttpServletResponse response , Model model) throws ServletException, IOException {
+	@ResponseBody
+	public String login(HttpServletRequest request, HttpServletResponse response , Model model) throws ServletException, IOException {
 
 		String _username = request.getParameter("username");
 		String _password = request.getParameter("password");
 		
 		String result = new LoginConsumer().login(_username, _password);
 		if("login successed".equals(result)){
-			request.getSession().setAttribute("loginState", "true");
+			request.getSession().setAttribute(_username, "true");
 		}
-		PrintWriter out = response.getWriter();
-		out.print(result);
-		out.flush();
-		out.close();
+//		PrintWriter out = response.getWriter();
+//		out.print(result);
+//		out.flush();
+//		out.close();
 //		return "index";
+		return result;
 	}
 
 
-	@RequestMapping(value = "/verify.do", method = RequestMethod.GET)
-	public void verify(HttpServletRequest request, HttpServletResponse response , Model model) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
-		if("true".equals(request.getSession().getAttribute("loginState"))){
-			out.print("already logined");
+	@RequestMapping(value = "/loginOut.do")//, method = RequestMethod.POST)
+	@ResponseBody
+	public String loginOut(HttpServletRequest request, HttpServletResponse response , Model model) throws ServletException, IOException {
+		String result;
+		String _username = request.getParameter("username");
+		if(request.getSession().getAttribute(_username) != null){
+			request.getSession().removeAttribute(_username);
+			result = "login out successed";
 		}else {
-			out.print("please login");
+			result = "please login";
 		}
-		out.flush();
-		out.close();
-		
+		return result;
+	}
+
+	@RequestMapping(value = "/verify.do", method = RequestMethod.GET)
+	@ResponseBody
+	public String verify(HttpServletRequest request, HttpServletResponse response , Model model) throws ServletException, IOException {
+		String result;
+//		PrintWriter out = response.getWriter();
+		String _username = request.getParameter("username");
+		if("true".equals(request.getSession().getAttribute(_username))){
+//			out.print("already logined");
+			result = "already logined";
+		}else {
+//			out.print("please login");
+			result = "please login";
+		}
+//		out.flush();
+//		out.close();
+
+		return result;
 	}
 	
 	
