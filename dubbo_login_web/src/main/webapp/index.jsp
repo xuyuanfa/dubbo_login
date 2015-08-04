@@ -18,7 +18,10 @@
 		<input type="button" value="登录状态" onclick="verify()" />
 		
 		<script type="text/javascript">
-			var localhost = "http://localhost:8080/";
+			//var localhost = "http://localhost:8080/";
+			var hosts = new Array();
+			hosts[0] = "http://1.com:18880/";
+			hosts[1] = "http://2.com:18880/";
 			function login() {
 				$.ajax({
 					url : 'login/login.do',// 跳转到 action    
@@ -31,7 +34,13 @@
 					//dataType : 'json',
 					success : function(data) {
 						alert(data);
-						loginByjsonp(localhost);
+						var host = document.domain;
+						for(var i=0;i<hosts.length;i++){
+							if(hosts[i].indexOf(host) > 0){
+								continue;
+							}
+							loginByjsonp(hosts[i]);
+						}
 					},
 					error : function() {
 						alert("异常！");
@@ -66,6 +75,13 @@
 					//dataType : 'json',
 					success : function(data) {
 						alert(data);
+						var host = document.domain;
+						for(var i=0;i<hosts.length;i++){
+							if(hosts[i].indexOf(host) > 0){
+								continue;
+							}
+							loginOutByjsonp(hosts[i]);
+						}
 					},
 					error : function() {
 						alert("异常！");
@@ -73,6 +89,7 @@
 				});
 			}
 			
+			//登录
 			function loginByjsonp(url) {
 				alert("loginByJsonp");
 		        $.ajax({
@@ -91,6 +108,22 @@
 			function loginSuccessByJsonp(data) {
 			    //处理data
 			    alert(data);
+			}
+			
+			//登出
+			function loginOutByjsonp(url) {
+				alert("loginOutByjsonp");
+		        $.ajax({
+		            type: "GET",
+		            cache: false,
+		            url: url+"dubbo_login_web/login/loginOutOther.do",
+		            data: {
+		            	username : $("#username").val()
+						},
+		            dataType: "jsonp",
+		            //jsonp: "callback",
+		            jsonpCallback: "loginSuccessByJsonp"
+		        });
 			}
 		</script>
 	</form>

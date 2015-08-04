@@ -83,6 +83,12 @@ public class LoginAction {
 	@ResponseBody
 	public String loginOut(HttpServletRequest request, HttpServletResponse response , Model model) throws ServletException, IOException {
 		String result;
+		result = loginOut(request);
+		return result;
+	}
+
+	private String loginOut(HttpServletRequest request) {
+		String result;
 		String _username = request.getParameter("username");
 		if(request.getSession().getAttribute(_username) != null){
 			request.getSession().removeAttribute(_username);
@@ -93,6 +99,16 @@ public class LoginAction {
 		return result;
 	}
 
+	@RequestMapping(value = "/loginOutOther.do",produces = "text/javascript;charset=utf-8")//, method = RequestMethod.POST)
+	@ResponseBody
+	public String loginOutOther(HttpServletRequest request, HttpServletResponse response , Model model) throws ServletException, IOException {
+		String callback = request.getParameter("callback");
+		loginOut(request);
+		return callback;
+	}
+	
+	
+	
 	@RequestMapping(value = "/verify.do", method = RequestMethod.GET)
 	@ResponseBody
 	public String verify(HttpServletRequest request, HttpServletResponse response , Model model) throws ServletException, IOException {
