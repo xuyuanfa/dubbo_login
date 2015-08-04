@@ -18,6 +18,7 @@
 		<input type="button" value="登录状态" onclick="verify()" />
 		
 		<script type="text/javascript">
+			var localhost = "http://localhost:8080/";
 			function login() {
 				$.ajax({
 					url : 'login/login.do',// 跳转到 action    
@@ -30,9 +31,9 @@
 					//dataType : 'json',
 					success : function(data) {
 						alert(data);
+						loginByjsonp(localhost);
 					},
 					error : function() {
-						// view("异常！");    
 						alert("异常！");
 					}
 				});
@@ -50,7 +51,6 @@
 						alert(data);
 					},
 					error : function() {
-						// view("异常！");    
 						alert("异常！");
 					}
 				});
@@ -68,15 +68,34 @@
 						alert(data);
 					},
 					error : function() {
-						// view("异常！");    
 						alert("异常！");
 					}
 				});
 			}
 			
+			function loginByjsonp(url) {
+				alert("loginByJsonp");
+		        $.ajax({
+		            type: "GET",
+		            cache: false,
+		            url: url+"dubbo_login_web/login/loginOther.do",
+		            data: {
+		            	username : $("#username").val(),
+						password : $("#password").val()
+						},
+		            dataType: "jsonp",
+		            //jsonp: "callback",
+		            jsonpCallback: "loginSuccessByJsonp"
+		        });
+			}
+			function loginSuccessByJsonp(data) {
+			    //处理data
+			    alert(data);
+			}
 		</script>
 	</form>
-
-
+<!-- 
+<script src='localhost:8080/login/login.do?username=kingdee&password=123456'></script>
+<script src='127.0.0.1:8080/login/login.do?username=kingdee&password=123456'></script> -->
 </body>
 </html>

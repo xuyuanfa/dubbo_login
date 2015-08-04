@@ -115,11 +115,11 @@
 				<artifactId>httpclient</artifactId>
 				<version>${httpclient_version}</version>
 			</dependency>
-			<dependency>
+		<!-- 	<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>hessian-lite</artifactId>
 				<version>${hessian_lite_version}</version>
-			</dependency>
+			</dependency> -->
 			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>fastjson</artifactId>

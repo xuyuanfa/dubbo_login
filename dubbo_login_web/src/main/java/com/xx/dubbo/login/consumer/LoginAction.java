@@ -24,6 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,24 +36,46 @@ import com.xx.dubbo.login.api.LoginService;
 @Controller
 @RequestMapping("/login")
 public class LoginAction {
-    
+	
+	@Autowired
+	private LoginService loginService;
+
 	@RequestMapping(value = "/login.do")//, method = RequestMethod.POST)
 	@ResponseBody
 	public String login(HttpServletRequest request, HttpServletResponse response , Model model) throws ServletException, IOException {
-
-		String _username = request.getParameter("username");
-		String _password = request.getParameter("password");
-		
-		String result = new LoginConsumer().login(_username, _password);
-		if("login successed".equals(result)){
-			request.getSession().setAttribute(_username, "true");
-		}
+		String result;
+		result = login(request);
 //		PrintWriter out = response.getWriter();
 //		out.print(result);
 //		out.flush();
 //		out.close();
 //		return "index";
 		return result;
+	}
+
+	private String login(HttpServletRequest request) {
+		String result;
+		String _username = request.getParameter("username");
+		String _password = request.getParameter("password");
+		
+		if("true".equals(request.getSession().getAttribute(_username))){
+			result = "already login";
+			return result;
+		}
+		result = loginService.loginIn(_username, _password);
+		if("login successed".equals(result)){
+			request.getSession().setAttribute(_username, "true");
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/loginOther.do",produces = "text/javascript;charset=utf-8")//, method = RequestMethod.POST)
+	@ResponseBody
+	public String loginOther(HttpServletRequest request, HttpServletResponse response , Model model) throws ServletException, IOException {
+		String callback = request.getParameter("callback");
+
+		login(request);
+		return callback;
 	}
 
 
@@ -89,17 +112,6 @@ public class LoginAction {
 		return result;
 	}
 	
-	
-
-    private static LoginService loginService;
-
-	public LoginService getLoginService() {
-		return loginService;
-	}
-
-	public void setLoginService(LoginService loginService) {
-		this.loginService = loginService;
-	}
 	public void start() throws Exception {
       for (int i = 0; i < Integer.MAX_VALUE; i ++) {
           try {

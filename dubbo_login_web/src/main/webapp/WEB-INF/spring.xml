@@ -10,8 +10,13 @@
 
 	<dubbo:reference id="loginService" interface="com.xx.dubbo.login.api.LoginService" />
 
-	<bean class="com.xx.dubbo.login.consumer.LoginConsumer">
+	<!-- <bean class="com.xx.dubbo.login.consumer.LoginAction">
 		<property name="loginService" ref="loginService" />
-	</bean>
+	</bean> -->
+	<!-- 使用zookeeper注册中心暴露服务地址
+	<dubbo:registry address="zookeeper://172.20.10.48:12182" /> -->
+
+	<!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 
+	<dubbo:application name="demo-consumer" />-->
 
 </beans>
